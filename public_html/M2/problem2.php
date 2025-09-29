@@ -27,11 +27,12 @@ function sumValues($arr, $arrayNumber)
     $total = 0;
     // Start Solution Edits
     // Solve Challenge 1 here
-
+    // rt524 09-29-2025
 
 
 
     // Solve Challenge 2 here
+    // rt524 09-29-2025
     $modifiedTotal = "?";
 
     // End Solution Edits
