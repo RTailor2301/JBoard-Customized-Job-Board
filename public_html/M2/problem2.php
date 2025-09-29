@@ -30,11 +30,15 @@ function sumValues($arr, $arrayNumber)
     // rt524 09-29-2025
     // for loop through array and for every array value, add to total
 
+    for ($i = 0; $i < count($arr); $i += 1) {
+        $total += $arr[$i];
+    }
+
 
     // Solve Challenge 2 here
     // rt524 09-29-2025
     // after getting total, multiply by 100, cast to int, divide by 100
-    $modifiedTotal = "?";
+    $modifiedTotal = number_format(((int)($total * 100) / 100), 2);
 
     // End Solution Edits
     echo "<p>Total Raw Value: {$total}</p>";
