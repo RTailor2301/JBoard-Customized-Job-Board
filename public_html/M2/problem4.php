@@ -30,12 +30,39 @@ function transformText($arr, $arrayNumber) {
     // Step 3: Add code to solve the problem (add/commit as needed)
     $placeholderForModifiedPhrase = "";
     $placeholderForMiddleCharacters = "";
+
+    $alphaNumOnly = [];
     foreach ($arr as $index => $text) {
         // Start Solution Edits
         // rt524 09-29-2025
         // Challenge 1: if char is not alphanumeric or a space, do not add to string. Otherwise append string.
         // Challenge 2: Capitalize first letter of first word and all first letters after encountering a space
         // Challenge 3: use a trim function for leading and trailing, then delete spaces if the next char is not a letter
+        $placeholderForModifiedPhrase = "";
+        // Challenge 1:
+        for ($i = 0; $i < strlen($text); $i++) {
+            if (!ctype_alnum($text[$i]) && $text[$i] != ' ') {
+                continue;
+            }
+            else {
+                $placeholderForModifiedPhrase = $placeholderForModifiedPhrase . $text[$i];
+            }
+        }
+        // Challenge 3:
+        $placeholderForModifiedPhrase = trim($placeholderForModifiedPhrase);
+        $placeholderForModifiedPhrase = preg_replace('/ +/', ' ', $placeholderForModifiedPhrase);
+
+        // Challenge 2:
+        $myString = '';
+        for ($i = 0; $i < strlen($placeholderForModifiedPhrase); $i++) {
+            if ($i == 0) {
+                $placeholderForModifiedPhrase[$i] = strtoupper($placeholderForModifiedPhrase[$i]);
+            }
+            if ($placeholderForModifiedPhrase[$i] == ' ') {
+                $placeholderForModifiedPhrase[$i+1] = strtoupper($placeholderForModifiedPhrase[$i+1]);
+                $i += 1;
+            }
+        }
 
         // End Solution Edits
         echo "<div>";

@@ -28,6 +28,18 @@ function bePositive($arr, $arrayNumber)
     // iterate through array and append positives to output using abs or conditionals
     // iterate through array and if string, convert to proper data type & add to array
 
+    for ($i = 0; $i < count($arr); $i++) {
+        if ($arr[$i] < 0 && !is_string($arr[$i])) {
+            $output[$i] = -1 * $arr[$i];
+        }
+        else if ($arr[$i] < 0 && is_string($arr[$i])) {
+            $output[$i] = (string)(-1 * $arr[$i]);
+        }
+        else {
+            $output[$i] = $arr[$i];
+        }
+    }
+
     // End Solution Edits
     echo "<span>Output: </span>";
     printOutputWithType($output);
