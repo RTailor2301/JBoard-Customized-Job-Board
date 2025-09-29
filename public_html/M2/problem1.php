@@ -24,6 +24,19 @@ function printOdds($arr, $arrayNumber)
     // Start Solution Edits
     // rt524 09-29-2025
     // Use for-loop to iterate array, and if item % 2 == 1, print and append comma
+    $empty = true;
+    for ($i = 0; $i < count($arr); $i += 1) {
+        if ($arr[$i] % 2 != 0 && $empty) {
+            echo $arr[$i];
+            $empty = false;
+        }
+        else if ($arr[$i] % 2 != 0) {
+            echo ", " . $arr[$i];
+        }
+        else {
+            continue;
+        }
+    }
 
     // End Solution Edits
     echo "<br>______________________________________<br>";
