@@ -28,11 +28,12 @@ function sumValues($arr, $arrayNumber)
     // Start Solution Edits
     // Solve Challenge 1 here
     // rt524 09-29-2025
-
+    // for loop through array and for every array value, add to total
 
 
     // Solve Challenge 2 here
     // rt524 09-29-2025
+    // after getting total, multiply by 100, cast to int, divide by 100
     $modifiedTotal = "?";
 
     // End Solution Edits

@@ -25,6 +25,8 @@ function bePositive($arr, $arrayNumber)
     $output = array_fill(0, count($arr), null); // Initialize output array
     // Start Solution Edits
     // rt524 09-29-2025
+    // iterate through array and append positives to output using abs or conditionals
+    // iterate through array and if string, convert to proper data type & add to array
 
     // End Solution Edits
     echo "<span>Output: </span>";

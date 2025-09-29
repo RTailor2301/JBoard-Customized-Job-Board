@@ -33,7 +33,9 @@ function transformText($arr, $arrayNumber) {
     foreach ($arr as $index => $text) {
         // Start Solution Edits
         // rt524 09-29-2025
-        
+        // Challenge 1: if char is not alphanumeric or a space, do not add to string. Otherwise append string.
+        // Challenge 2: Capitalize first letter of first word and all first letters after encountering a space
+        // Challenge 3: use a trim function for leading and trailing, then delete spaces if the next char is not a letter
 
         // End Solution Edits
         echo "<div>";

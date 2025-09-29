@@ -23,6 +23,7 @@ function printOdds($arr, $arrayNumber)
     echo "Output Array: ";
     // Start Solution Edits
     // rt524 09-29-2025
+    // Use for-loop to iterate array, and if item % 2 == 1, print and append comma
 
     // End Solution Edits
     echo "<br>______________________________________<br>";
