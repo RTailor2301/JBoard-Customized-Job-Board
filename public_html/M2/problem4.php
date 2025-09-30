@@ -70,7 +70,19 @@ function transformText($arr, $arrayNumber) {
 
         // Challenge 4: check if the word is larger than 4 letters. If even letters, divide by 2 and return that index and 1 less.
         // If odd, return middle and +/- 1
-
+        $text = $placeholderForModifiedPhrase;
+        if (strlen($text) == 4 && strlen($text) % 2 == 0) {
+            $placeholderForMiddleCharacters = $text[(int)(strlen($text) / 2) - 1] . $text[(int)(strlen($text) / 2)];
+        }
+        else if (strlen($text) >= 4 && strlen($text) % 2 == 0) {
+            $placeholderForMiddleCharacters = $text[(int)(strlen($text) / 2) - 1] . $text[(int)(strlen($text) / 2)] . $text[(int)(strlen($text) / 2) + 1];
+        }
+        else if (strlen($text) >= 4 && strlen($text) % 2 != 0) {
+            $placeholderForMiddleCharacters = $text[(int)(strlen($text) / 2) - 1] . $text[(int)(strlen($text) / 2)] . $text[(int)(strlen($text) / 2) + 1];
+        }
+        else {
+            $placeholderForMiddleCharacters = "Not enough characters";
+        }
 
         // End Solution Edits
         echo "<div>";
