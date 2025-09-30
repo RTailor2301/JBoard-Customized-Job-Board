@@ -68,6 +68,10 @@ function transformText($arr, $arrayNumber) {
             }
         }
 
+        // Challenge 4: check if the word is larger than 4 letters. If even letters, divide by 2 and return that index and 1 less.
+        // If odd, return middle and +/- 1
+
+
         // End Solution Edits
         echo "<div>";
         printStringTransformations($index, $placeholderForModifiedPhrase, $placeholderForMiddleCharacters);
