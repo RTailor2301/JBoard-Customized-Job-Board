@@ -38,7 +38,11 @@ function sumValues($arr, $arrayNumber)
     // Solve Challenge 2 here
     // rt524 09-29-2025
     // after getting total, multiply by 100, cast to int, divide by 100
-    $modifiedTotal = number_format(((int)($total * 100) / 100), 2);
+    $newTotal = $total * 100;
+    if ($newTotal % 10 >= 5) {
+        $newTotal = $newTotal + 1;
+    }
+    $modifiedTotal = number_format(((int)($newTotal) / 100), 2);
 
     // End Solution Edits
     echo "<p>Total Raw Value: {$total}</p>";

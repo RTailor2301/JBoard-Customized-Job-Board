@@ -57,10 +57,14 @@ function transformText($arr, $arrayNumber) {
         for ($i = 0; $i < strlen($placeholderForModifiedPhrase); $i++) {
             if ($i == 0) {
                 $placeholderForModifiedPhrase[$i] = strtoupper($placeholderForModifiedPhrase[$i]);
+                continue;
             }
             if ($placeholderForModifiedPhrase[$i] == ' ') {
                 $placeholderForModifiedPhrase[$i+1] = strtoupper($placeholderForModifiedPhrase[$i+1]);
                 $i += 1;
+            } 
+            else {
+                $placeholderForModifiedPhrase[$i] = strtolower($placeholderForModifiedPhrase[$i]);
             }
         }
 
