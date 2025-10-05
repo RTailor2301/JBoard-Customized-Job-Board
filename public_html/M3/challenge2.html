@@ -104,5 +104,41 @@ Requirements:
     /* Make the header sticky, same as challenge 1. Float both left and right sidebars to respective sides and content overflow auto.
     Make sidebars take up 15% using width, and content take up the remaining space*/
 
+    /*
+    header {
+        position: sticky;
+        top: 0;
+    }
+    #left-sidebar {
+        width: 15%;
+        float: left;
+        height: 100vh;
+    }
+    #right-sidebar {
+        width: 15%;
+        float: right;
+        height: 100vh;
+    }
+    .content {
+        height: 100vh;
+        overflow: auto;
+        width: 70%;
+        float: left;
+    }
+    */
 
+    .container {
+        display: flex;
+    }
+    .content {
+        height: 100vh;
+        overflow: auto;
+        flex: 1;
+    }
+    #left-sidebar, #right-sidebar {
+        width: 15%;
+    }
+    body {
+        overflow: hidden;
+    }
 </style>
