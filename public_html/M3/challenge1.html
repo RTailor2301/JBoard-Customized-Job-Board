@@ -63,4 +63,22 @@ Requirements:
     /* Solution: make footer and header sticky to keep them on the top and bottom, and make the class "content" overflow to auto*/
 
 
+    head {
+        position: sticky;
+        top: 0;
+    }
+    footer {
+        position: sticky;
+        bottom: 0;
+    }
+
+    .content {
+        height: 100vh;
+        overflow: auto;
+    }
+
+    html {
+        overflow: hidden;
+    }
+
 </style>
