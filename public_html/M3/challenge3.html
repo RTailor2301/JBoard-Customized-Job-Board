@@ -81,14 +81,71 @@ Requirements:
     /* Make an array of all panels with the ID .panel and call a function that cycles through panels based on button click.
         Account for array out of bounds index with an if */
 
+    const carouselPanels = document.querySelectorAll(".panel");
+    const buttons = document.querySelectorAll("button");
+
+    const prevButton = buttons[0];
+    const nextButton = buttons[1];
+
+    console.log(carouselPanels);
+    console.log(buttons);
+    let currentPanel = 0;
+
+    carouselPanels[currentPanel].style.display = "block";
+    carouselPanels[currentPanel].style.height = "50vh";
+
+    function updateCarousel(currentPanel) {
+        carouselPanels[currentPanel].style.display = "block";
+        carouselPanels[currentPanel].style.height = "50vh";
+    }
+
+    prevButton.addEventListener("click", function() {
+        console.log("prev button clicked");
+        carouselPanels[currentPanel].style.display = "none";
+        if (currentPanel == 0) {
+            currentPanel = 5;
+            updateCarousel(currentPanel)
+        }
+        else {
+            currentPanel--;
+            updateCarousel(currentPanel)
+        }
+    })
+    nextButton.addEventListener("click", function() {
+        console.log("next button clicked");
+        carouselPanels[currentPanel].style.display = "none";
+        if (currentPanel == 5) {
+            currentPanel = 0;
+            updateCarousel(currentPanel)
+        }
+        else {
+            currentPanel++;
+            updateCarousel(currentPanel)
+        }
+    })
+
 </script>
 
 <style>
     /* You're free to make whatever edits you need here, just don't override anything in the styles.css */
     /* rt524 10-06-25 */
     /* Keep the header at the top with a sticky position, and only change the 2nd nav under challenge3 to be centered
-        with a flex */   
+        with a flex */  
 
+    header {
+        position: sticky;
+        top: 0;
+        padding: 10px;
+    }
+
+    .challenge3 nav:nth-of-type(2) {
+        display: flex;
+        justify-content: center;
+    }
+
+    .panel {
+        display: none;
+    }
 </style>
 
 
