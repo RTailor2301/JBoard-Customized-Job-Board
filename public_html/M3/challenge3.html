@@ -91,12 +91,14 @@ Requirements:
     console.log(buttons);
     let currentPanel = 0;
 
-    carouselPanels[currentPanel].style.display = "block";
+    carouselPanels[currentPanel].style.display = "flex";
     carouselPanels[currentPanel].style.height = "50vh";
+    carouselPanels[currentPanel].style.width = "100vw";
 
     function updateCarousel(currentPanel) {
-        carouselPanels[currentPanel].style.display = "block";
+        carouselPanels[currentPanel].style.display = "flex";
         carouselPanels[currentPanel].style.height = "50vh";
+        carouselPanels[currentPanel].style.width = "100vw";
     }
 
     prevButton.addEventListener("click", function() {
@@ -142,10 +144,15 @@ Requirements:
         display: flex;
         justify-content: center;
     }
-
+    .carousel-container {
+        display: flex;
+    }
     .panel {
+        justify-content: center;
+        align-items: center;
         display: none;
     }
+
 </style>
 
 
