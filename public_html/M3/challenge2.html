@@ -99,7 +99,32 @@ Requirements:
     /* rt524 */
     /* Get the button element by their ID and on click, reduce the width of the sidebar to 0. Repeated button presses with a boolean flip value. */
 
-   
+    const leftButton = document.getElementById("left-sidebar");
+    const rightButton = document.getElementById("right-sidebar");
+    let leftButtonClicked = false;
+    let rightButtonClicked = false;
+
+    leftButton.addEventListener("click", function() {
+        if (leftButtonClicked) {
+            leftButton.style.width = "15%";
+            leftButtonClicked = false;
+        }
+        else {
+            leftButton.style.width = "0%";
+            leftButtonClicked = true;
+        }
+    })
+
+    rightButton.addEventListener("click", function() {
+        if (rightButtonClicked) {
+            rightButton.style.width = "15%";
+            rightButtonClicked = false;
+        }
+        else {
+            rightButton.style.width = "0%";
+            rightButtonClicked = true;
+        }
+    }) 
 </script>
 
 <style>
