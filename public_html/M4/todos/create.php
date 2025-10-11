@@ -22,8 +22,15 @@ if (empty($diff)) {
     
     // rt524 10/11/25 
     // check if due is 8 chars long (already in DATE format) and if assigned is empty/blank
-
-
+    if (strlen($due) != 10) {
+        echo "Date is not valid. Please provide a valid date.";
+        $is_valid = false;
+    }
+    if (empty(trim($assigned))) {
+        echo "Assigned is not valid. Defaulting to 'self'";
+        $assigned = "self";
+        $is_valid = false;
+    }
     // End validations
 
     
