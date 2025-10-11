@@ -19,6 +19,8 @@ if (empty($diff)) {
     // Assigned should check for "self" if a valid format/value isn't provided.
     // Start validations
     // can edit here
+    // 
+
     // End validations
 
     
@@ -62,6 +64,8 @@ if (empty($diff)) {
             <!-- design the form with proper labels and input fields with the correct types based on the SQL table.
              Wrap each label/input pair in a div tag.
              For "Assigned" ensure the default value is "self". -->
+            <!-- rt524 10/11/25 Create a form based on the task, due, and assigned column names
+             Ensure that task's input is text, due is a calendar, and assigned value is "self"--> 
             <div>
                 <label for="task">Task</label>
                 <input type="text" id="task" name="task" required>
