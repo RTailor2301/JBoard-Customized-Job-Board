@@ -19,7 +19,10 @@ if (empty($diff)) {
     // Assigned should check for "self" if a valid format/value isn't provided.
     // Start validations
     // can edit here
-    // 
+    
+    // rt524 10/11/25 
+    // check if due is 8 chars long (already in DATE format) and if assigned is empty/blank
+
 
     // End validations
 
