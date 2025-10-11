@@ -32,13 +32,15 @@ if (empty($diff)) {
         $is_valid = false;
     }
     // End validations
-
     
     if ($is_valid) {
         /*
         Design a query to insert the incoming data to the proper columns.
         Ensure valid and proper PDO named placeholders are used.
         https://phpdelusions.net/pdo
+
+        rt524 10/11/25 use INSERT INTO tablename (col1, col2, col3) VALUES (task, due, assignment) for query
+        in params, define the associative array
         */
         $query = ""; // edit this
         $params = []; // Apply the proper PDO placeholder to variable mapping here
