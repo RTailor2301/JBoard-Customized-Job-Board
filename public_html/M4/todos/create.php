@@ -65,8 +65,14 @@ if (empty($diff)) {
 
             // rt524 10/11/25 Find the duplicate primary key error message. If is duplicate, show error message
             // otherwise, throw default error
-            echo "There was an error inserting the record; check the logs (terminal)";
-            error_log("Insert Error: " . var_export($e, true)); // shows in the terminal
+            if ($e->getCode() == 23000) {
+                echo "Duplicate entry. Ensure that for each task of the same name, the due date is unique.";
+            }
+            else {
+                echo "There was an error inserting the record; check the logs (terminal)";
+                echo $e->getCode();
+                error_log("Insert Error: " . var_export($e, true)); // shows in the terminal
+            }
         }
     } else {
         error_log("Creation input wasn't valid");
