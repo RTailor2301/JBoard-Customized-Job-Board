@@ -42,8 +42,12 @@ if (empty($diff)) {
         rt524 10/11/25 use INSERT INTO tablename (col1, col2, col3) VALUES (task, due, assignment) for query
         in params, define the associative array
         */
-        $query = ""; // edit this
-        $params = []; // Apply the proper PDO placeholder to variable mapping here
+        $query = "INSERT INTO M4_Todos (task, due, assigned) VALUES (:task, :due, :assigned)"; // edit this
+        $params = [
+            ":task" => $task,
+            ":due" => $due,
+            ":assigned" => $assigned
+        ]; // Apply the proper PDO placeholder to variable mapping here
         try {
             $db = getDB();
             $stmt = $db->prepare($query);
@@ -58,7 +62,9 @@ if (empty($diff)) {
             // check if the exception was related to a unique constraint
             // provide an appropriate user-friendly message for this scenario
             // Otherwise show the default message below
+            // rt524 10/11/25 
             echo "There was an error inserting the record; check the logs (terminal)";
+            echo $e;
             error_log("Insert Error: " . var_export($e, true)); // shows in the terminal
         }
     } else {
