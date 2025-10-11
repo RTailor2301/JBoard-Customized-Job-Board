@@ -62,9 +62,10 @@ if (empty($diff)) {
             // check if the exception was related to a unique constraint
             // provide an appropriate user-friendly message for this scenario
             // Otherwise show the default message below
-            // rt524 10/11/25 
+
+            // rt524 10/11/25 Find the duplicate primary key error message. If is duplicate, show error message
+            // otherwise, throw default error
             echo "There was an error inserting the record; check the logs (terminal)";
-            echo $e;
             error_log("Insert Error: " . var_export($e, true)); // shows in the terminal
         }
     } else {
