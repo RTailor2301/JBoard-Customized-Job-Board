@@ -62,7 +62,18 @@ if (empty($diff)) {
             <!-- design the form with proper labels and input fields with the correct types based on the SQL table.
              Wrap each label/input pair in a div tag.
              For "Assigned" ensure the default value is "self". -->
-          
+            <div>
+                <label for="task">Task</label>
+                <input type="text" id="task" name="task" required>
+            </div>
+            <div>
+                <label for="due">Due</label>
+                <input type="date" id="due" name="due" required>
+            </div>
+            <div>
+                <label for="assigned">Assigned</label>
+                <input type="text" id="assigned" name="assigned" value="self" required>
+            </div>
             <div>
                 <input type="submit" />
             </div>
