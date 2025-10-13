@@ -10,6 +10,7 @@ For the completed date you'll need to extract the date portion from the complete
 For the Status part, you'll need to calculate the "days_offset" from the completed date, ensure the virtual column matches "days_offset".
 Filter the results where the todo item is completed and order the results by most recently completed and most recently due.
 No limit is required.
+rt524 10/13/25 same query as pending but where is_complete is 1 and sort by the completed timestamp
 */
 $query = ""; // edit this
 $results = [];
