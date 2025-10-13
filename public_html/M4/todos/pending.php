@@ -11,9 +11,16 @@ if (isset($_POST["id"])) {
     Ensure the "id" is utilized using proper PDO named placeholders so that only the one item is updated.
     Add an extra clause to update only if the complete field of the record is not set.
     https://phpdelusions.net/pdo
+    rt524 10/13/25 
+    Update the table so that when the form is submitted, set complete to 1, copmleted to current date
+    Ensure ID matches and that the the item is not already completed for additional validation
     */
-    $query = ""; // edit this
-    $params = []; // apply mapping
+    $query = "UPDATE M4_Todos
+                SET is_complete = 1, completed = CURDATE()
+                WHERE id = :id AND is_complete = 0"; // edit this
+    $params = [
+        ':id' => $id
+    ]; // apply mapping
     
     try {
         $stmt = $db->prepare($query);
