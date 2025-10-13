@@ -12,7 +12,10 @@ Filter the results where the todo item is completed and order the results by mos
 No limit is required.
 rt524 10/13/25 same query as pending but where is_complete is 1 and sort by the completed timestamp
 */
-$query = ""; // edit this
+$query = "SELECT id, task, due, completed, DATEDIFF(due, CURTIME()) AS days_offset, assigned 
+            FROM M4_Todos
+            WHERE is_complete = 1
+            ORDER BY completed ASC"; // edit this
 $results = [];
 try {
     $stmt = $db->prepare($query);
