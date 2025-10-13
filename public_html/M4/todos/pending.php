@@ -38,8 +38,11 @@ rt524 10/13/25
 Select all the rows in the table that match the form, make days offset the difference between due date and current date
 If is not complete (is_complete = 0 or null) then display and sort by ascending
 */
-$query = ""; // edit this
-$results = [":id" => $id];
+$query = "SELECT id, task, due, DATEDIFF(due, CURDATE()) AS days_offset, assigned 
+            FROM M4_Todos
+            WHERE is_complete IS NULL or is_complete = 0
+            ORDER BY due ASC"; // edit this
+$results = [];
 try {
     $stmt = $db->prepare($query);
     $r = $stmt->execute();
