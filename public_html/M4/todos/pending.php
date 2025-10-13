@@ -34,9 +34,12 @@ For the Status part, you'll need to calculate the "days_offset" from the due dat
 For Actions, this isn't part of the query and there's nothing special to select for it.
 Filter the results where the todo item is NOT completed and order the results by those due the soonest.
 No limit is required.
+rt524 10/13/25
+Select all the rows in the table that match the form, make days offset the difference between due date and current date
+If is not complete (is_complete = 0 or null) then display and sort by ascending
 */
 $query = ""; // edit this
-$results = [];
+$results = [":id" => $id];
 try {
     $stmt = $db->prepare($query);
     $r = $stmt->execute();
