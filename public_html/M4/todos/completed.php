@@ -15,7 +15,7 @@ rt524 10/13/25 same query as pending but where is_complete is 1 and sort by the 
 $query = "SELECT id, task, due, completed, DATEDIFF(due, CURTIME()) AS days_offset, assigned 
             FROM M4_Todos
             WHERE is_complete = 1
-            ORDER BY completed ASC"; // edit this
+            ORDER BY completed DESC"; // edit this
 $results = [];
 try {
     $stmt = $db->prepare($query);

@@ -16,7 +16,7 @@ if (isset($_POST["id"])) {
     Ensure ID matches and that the the item is not already completed for additional validation
     */
     $query = "UPDATE M4_Todos
-                SET is_complete = 1, completed = CURDATE()
+                SET is_complete = 1, completed = NOW()
                 WHERE id = :id AND is_complete = 0"; // edit this
     $params = [
         ':id' => $id
