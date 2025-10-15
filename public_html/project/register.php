@@ -1,5 +1,5 @@
 <?php
-require(__DIR__."/../../lib/functions.php");
+require(__DIR__ . "/../../lib/functions.php");
 ?>
 <h3>Register</h3>
 <form onsubmit="return validate(this)" method="POST">
@@ -29,9 +29,39 @@ require(__DIR__."/../../lib/functions.php");
 //TODO 2: add PHP Code
 if (isset($_POST["email"], $_POST["password"], $_POST["confirm"])) {
 
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $confirm = $_POST["confirm"];
+    $email = se($_POST, "email", "", false);
+    $password = se($_POST, "password", "", false);
+    $confirm = se($_POST, "confirm", "", false);
     // TODO 3: validate/use
+    $hasError = false;
+
+    if (empty($email)) {
+        echo "Email must not be empty<br>";
+        $hasError = true;
+    }
+
+    if (empty($password)) {
+        echo "Password must not be empty<br>";
+        $hasError = true;
+    }
+
+    if (empty($confirm)) {
+        echo "Confirm password must not be empty<br>";
+        $hasError = true;
+    }
+
+    if (strlen($password) < 8) {
+        echo "Password too short<br>";
+        $hasError = true;
+    }
+
+    if ($password !== $confirm) {
+        echo "Passwords must match<br>";
+        $hasError = true;
+    }
+
+    if (!$hasError) {
+        echo "Success<br>";
+    }
 }
 ?>
