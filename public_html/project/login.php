@@ -1,7 +1,7 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-<h3>Register</h3>
+<h3>Login</h3>
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
@@ -11,11 +11,7 @@ require(__DIR__ . "/../../partials/nav.php");
         <label for="pw">Password</label>
         <input type="password" id="pw" name="password" required minlength="8" />
     </div>
-    <div>
-        <label for="confirm">Confirm</label>
-        <input type="password" name="confirm" required minlength="8" />
-    </div>
-    <input type="submit" value="Register" />
+    <input type="submit" value="Login" />
 </form>
 <script>
     function validate(form) {
@@ -27,11 +23,10 @@ require(__DIR__ . "/../../partials/nav.php");
 </script>
 <?php
 //TODO 2: add PHP Code
-if (isset($_POST["email"], $_POST["password"], $_POST["confirm"])) {
+if (isset($_POST["email"], $_POST["password"])) {
 
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
-    $confirm = se($_POST, "confirm", "", false);
     // TODO 3: validate/use
     $hasError = false;
 
@@ -49,35 +44,13 @@ if (isset($_POST["email"], $_POST["password"], $_POST["confirm"])) {
         echo "Password must not be empty<br>";
         $hasError = true;
     }
-
-    if (empty($confirm)) {
-        echo "Confirm password must not be empty<br>";
-        $hasError = true;
-    }
-
     if (strlen($password) < 8) {
         echo "Password too short<br>";
         $hasError = true;
     }
 
-    if ($password !== $confirm) {
-        echo "Passwords must match<br>";
-        $hasError = true;
-    }
-
     if (!$hasError) {
-        // TODO 4: Hash password before storing
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-        $db = getDB(); // available due to the `require()` of `functions.php` 
-        // Code for inserting user data into the database
-        $stmt = $db->prepare("INSERT INTO Users (email, password) VALUES (:email, :password)");
-        try {
-            $stmt->execute([':email' => $email, ':password' => $hashed_password]);
-            echo "Successfully registered!";
-        } catch (Exception $e) {
-            echo "There was an error registering<br>"; // user-friendly message
-            error_log("Registration Error: " . var_export($e, true)); // log the technical error for debugging
-        }
+        // TODO 4: Check password and fetch user
     }
 }
 ?>
