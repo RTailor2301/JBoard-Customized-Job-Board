@@ -51,6 +51,28 @@ if (isset($_POST["email"], $_POST["password"])) {
 
     if (!$hasError) {
         // TODO 4: Check password and fetch user
+        $db = getDB();
+        $stmt = $db->prepare("SELECT id, email, password from Users where email = :email");
+        try {
+            $r = $stmt->execute([":email" => $email]);
+            if ($r) {
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($user) {
+                    $hash = $user["password"];
+                    unset($user["password"]);
+                    if (password_verify($password, $hash)) {
+                        echo "Welcome, $email!<br>";
+                    } else {
+                        echo "Invalid password<br>";
+                    }
+                } else {
+                    echo "Email not found<br>";
+                }
+            }
+        } catch (Exception $e) {
+            echo "There was an error logging in<br>"; // user-friendly message
+            error_log("Login Error: " . var_export($e, true)); // log the technical error for debugging
+        }
     }
 }
 ?>
