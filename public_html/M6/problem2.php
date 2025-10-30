@@ -30,7 +30,10 @@ function processCars($cars) {
     $processedCars = []; // result array
     $classic_age = 25; // don't change this value
     // Start edits
-   
+    // rt524 10/30/25
+    // use the date() function to get the current date in year format
+    // create the temporary array to hold each car and its current values, but add age (date - year) and set classic as true if (date - year > classicage)
+    
     // End edits
     echo "<pre>" . var_export($processedCars, true) . "</pre>";
     
