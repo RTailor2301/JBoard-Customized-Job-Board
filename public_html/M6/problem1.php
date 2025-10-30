@@ -29,6 +29,13 @@ function processBirds($birds) {
     $subset = []; // result array
     // Start edits
     // rt524 10/30/25 Solution: Iterate over the birds in a foreach loop and if the key is name,color,region then add to subset
+    $temp = [];
+    foreach ($birds as $bird) {
+        $temp["name"] = $bird["name"];
+        $temp["color"] = $bird["color"];
+        $temp["region"] = $bird["region"];
+        $subset[] = $temp;
+    }
     
     // End edits
     echo "<pre>" . var_export($subset, true) . "</pre>";
