@@ -33,7 +33,18 @@ function processCars($cars) {
     // rt524 10/30/25
     // use the date() function to get the current date in year format
     // create the temporary array to hold each car and its current values, but add age (date - year) and set classic as true if (date - year > classicage)
-    
+    $date = date('Y');
+    foreach ($cars as $car) {
+        $temp = [];
+        $temp = $car;
+        $temp["age"] = $date - $car["year"];
+        if ($date - $car["year"] >= $classic_age) {
+            $temp["isClassic"] = true;
+        } else {
+            $temp["isClassic"] = false;
+        }
+        $processedCars[] = $temp;
+    }
     // End edits
     echo "<pre>" . var_export($processedCars, true) . "</pre>";
     
