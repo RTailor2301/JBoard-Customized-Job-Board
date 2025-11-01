@@ -50,7 +50,7 @@ function joinArrays($users, $activities) {
     // TODO Objective: Add logic to join both arrays on the userId property into one $joined array
     $joined = []; // result array
     // Start edits
-    
+    // rt524 11/1/25 join the two arrays using array_marge() in a for loop, array 2 overwrites on common column
 
     // End edits
     echo "<pre>" . var_export($joined, true) . "</pre>";
