@@ -51,7 +51,9 @@ function joinArrays($users, $activities) {
     $joined = []; // result array
     // Start edits
     // rt524 11/1/25 join the two arrays using array_marge() in a for loop, array 2 overwrites on common column
-
+    for ($i = 0; $i < count($users); $i++) {
+        $joined[] = array_merge($users[$i], $activities[$i]);
+    }
     // End edits
     echo "<pre>" . var_export($joined, true) . "</pre>";
 }
