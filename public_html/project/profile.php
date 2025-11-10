@@ -26,7 +26,7 @@ if (isset($_POST["email"], $_POST["username"])) {
         flash("Invalid email address.", "danger");
         $hasError = true;
     }
-    if (!preg_match('/^[a-z0-9-_]{3,30}$/', $new_username)) {
+    if (!is_valid_username($new_username)) {
         flash("Username must be lowercase, alphanumerical, and can only contain _ or -", "danger");
         $hasError = true;
     }
@@ -50,19 +50,7 @@ if (isset($_POST["email"], $_POST["username"])) {
             }
         } catch (PDOException $e) {
             // handle existing email/username error
-            if ($e->errorInfo[1] === 1062) {
-                //https://www.php.net/manual/en/function.preg-match.php
-                preg_match("/Users.(\w+)/", $e->errorInfo[2], $matches);
-                if (isset($matches[1])) {
-                    flash("The chosen " . $matches[1] . " is not available.", "warning");
-                } else {
-                    flash("Unknown error occurred", "danger");
-                    error_log("Error interpreting PDOException message: " . var_export($e, true));
-                }
-            } else {
-                flash("Unhandled error occurred", "danger");
-                error_log("Error updating email/username: " . var_export($e, true));
-            }
+            users_check_duplicate($e);
         } catch (Exception $e) {
             flash("An unexpected error occurred, please try again", "danger");
             error_log("Unexpected Error updating user details: " . var_export($e, true));
@@ -106,12 +94,12 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
     $can_update = !empty($current_password) && !empty($new_password) && !empty($confirm_password);
     if ($can_update) {
         // check that new matches confirm (i.e., no typos)
-        if ($new_password !== $confirm_password) {
+        if (!is_valid_confirm($new_password,$confirm_password)) {
             flash("New passwords don't match", "warning");
         } else {
             //validate current password against password rules
             $hasError = false;
-            if (strlen($new_password) < 8) {
+            if (!is_valid_password($new_password)) {
                 //echo "Password too short<br>";
                 flash("Password must be at least 8 characters long.", "danger");
                 $hasError = true;
@@ -197,21 +185,7 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
         //find the flash container, create a new element, appendChild
         // NOTE: we'll extract the flash code to a function later
         if (pw !== con) { // first JS validation example
-            //find the container
-            let flash = document.getElementById("flash");
-            //create a div (or whatever wrapper we want)
-            let outerDiv = document.createElement("div");
-            outerDiv.className = "row justify-content-center";
-            let innerDiv = document.createElement("div");
-
-            //apply the CSS (these are bootstrap classes which we'll learn later)
-            innerDiv.className = "alert alert-warning";
-            //set the content
-            innerDiv.innerText = "Password and Confirm password must match";
-
-            outerDiv.appendChild(innerDiv);
-            //add the element to the DOM (if we don't it merely exists in memory)
-            flash.appendChild(outerDiv);
+            flash("Password and confirm password must match", "danger");
             isValid = false;
         }
         // returning false will prevent the form from submitting
