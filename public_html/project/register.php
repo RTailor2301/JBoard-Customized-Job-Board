@@ -25,8 +25,26 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation (you'll do this on your own towards the end of Milestone1)
         //ensure it returns false for an error and true for success
+        let email = form.email.value;
+        let username = form.username.value;
+        let password = form.password.value;
+        let confirm = form.confirm.value;
+        let isValid = true;
 
-        return true;
+        if (email.length === 0 || username.length === 0 || password.length === 0 || confirm.length === 0) {
+            flash("Make sure all form fields are filled out", "danger");
+            isValid = false;
+        }
+        if (username.length < 3) {
+            flash("Username must be at least 3 characters", "danger");
+            isValid = false;
+        }
+        if (!/[a-zA-z]/.test(username)) {
+            flash("Username must contain at least 1 letter", "danger");
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 <?php
