@@ -25,6 +25,8 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation (you'll do this on your own towards the end of Milestone1)
         //ensure it returns false for an error and true for success
+        //  rt524 11/10/25 adds the fields from the form and validates with functions from helpers
+        // uses regex to validate the username and email, also checks if empty if length is 0
         let email = form.email.value;
         let username = form.username.value;
         let password = form.password.value;

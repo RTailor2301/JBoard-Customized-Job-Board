@@ -17,6 +17,9 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation (you'll do this on your own towards the end of Milestone1)
         //ensure it returns false for an error and true for success
+        // rt524 11/10 checks both isValidEmail and isValidUsername in heleprs.js
+        // uses regex to see if the input is valid for each field with valid characters
+        // if neither is valid, will say one or the other is invalid, checks password length
         let login = form.email.value;
         let password = form.password.value;
         // let isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login);

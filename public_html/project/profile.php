@@ -176,6 +176,9 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
 
 <script>
     function validate(form) {
+        // rt524 11/10 uses the validate password, email, and username found in helpers.js
+        // checks for length, and valid characters
+        // uses regex to check these values to ensure their validity, also checks the new password against the current password
         let pw = form.newPassword.value;
         let con = form.confirmPassword.value;
         let isValid = true;
