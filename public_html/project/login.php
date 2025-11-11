@@ -19,20 +19,18 @@ require(__DIR__ . "/../../partials/nav.php");
         //ensure it returns false for an error and true for success
         let login = form.email.value;
         let password = form.password.value;
+        // let isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login);
+        // let isUsername = /^[a-zA-Z0-9_]{3,30}$/.test(login);
 
-        let isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login);
-        let isUsername = /^[a-zA-Z0-9_]{3,30}$/.test(login);
-
-        if (!isEmail && !isUsername) {
-            flash("Invalid login", "danger");
+        if (!isValidPassword(password)) {
+            flash("Password must be at least 8 characters", "warning");
             isValid = false;
         }
-
-        if (login.length < 3) {
-            flash("Login must be at least 3 characters", "danger");
+        if (!isValidEmail(login) && !isValidUsername(login)) {
+            flash("Email or username is invalid", "warning");
             isValid = false;
         }
-        return true;
+        return isValid;
     }
 </script>
 <?php

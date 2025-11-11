@@ -184,14 +184,19 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
         let username = form.username.value;
         let cp = form.cp.value;
 
-        if (cp.length === 0 || pw.length === 0 || con.length === 0) {
-            flash("Make sure all form fields are filled out", "danger");
+        if (!isValidPassword(pw)) {
+            flash("Password must be at least 8 characters", "warning");
             isValid = false;
         }
-        if (!/[a-zA-z]/.test(username)) {
-            flash("Username must contain at least 1 letter", "danger");
+        if (!isValidEmail(email)) {
+            flash("Email is not valid", "warning");
             isValid = false;
         }
+        if (!isValidUsername(username)) {
+            flash("Username can only contain letters, numbers, _ and -. Must be between 3-30 characters", "warning");
+            isValid = false;
+        }
+
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
         // NOTE: we'll extract the flash code to a function later

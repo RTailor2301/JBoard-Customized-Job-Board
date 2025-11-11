@@ -31,19 +31,22 @@ require(__DIR__ . "/../../partials/nav.php");
         let confirm = form.confirm.value;
         let isValid = true;
 
+        if (!isValidPassword(password)) {
+            flash("Password must be at least 8 characters", "warning");
+            isValid = false;
+        }
+        if (!isValidEmail(email)) {
+            flash("Email is not valid", "warning");
+            isValid = false;
+        }
+        if (!isValidUsername(username)) {
+            flash("Username can only contain letters, numbers, _ and -. Must be between 3-30 characters", "warning");
+            isValid = false;
+        }
         if (email.length === 0 || username.length === 0 || password.length === 0 || confirm.length === 0) {
             flash("Make sure all form fields are filled out", "danger");
             isValid = false;
         }
-        if (username.length < 3) {
-            flash("Username must be at least 3 characters", "danger");
-            isValid = false;
-        }
-        if (!/[a-zA-z]/.test(username)) {
-            flash("Username must contain at least 1 letter", "danger");
-            isValid = false;
-        }
-
         return isValid;
     }
 </script>
