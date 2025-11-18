@@ -1,6 +1,14 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 
+// rt524 11/17/25
+// changed data to match fields in the endpoint if a query (req field) is set
+// set endpoint to jsearch Search endpoint
+// set rapid API host to jsearch
+// altered $result to fetch from the JSEARCH_API_KEY from env
+// cached the result in $result for continued use without using API calls
+// altered form to be relevant to jsearch instead of alphavantage
+
 $result = [];
 if (isset($_GET["query"])) {
     //function=GLOBAL_QUOTE&symbol=MSFT&datatype=json
@@ -111,7 +119,7 @@ API
 }
 ?>
 <div class="container-fluid">
-    <h1>Stock Info</h1>
+    <h1>Job Info</h1>
     <p>Remember, we typically won't be frequently calling live data from our API, this is merely a quick sample. We'll want to cache data in our DB to save on API quota.</p>
     <form>
         <div>
