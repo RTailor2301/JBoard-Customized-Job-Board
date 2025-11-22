@@ -129,7 +129,7 @@ function fetch_jobs($query)
                 // details
                 "job_description"          => $r["job_description"] ?? null,
                 "job_is_remote"            => $r["job_is_remote"] ?? null,
-                "job_posted_at"            => $r["job_posted_at_datetime_utc"] ?? null,
+                "job_posted_at_datetime_utc" => $r["job_posted_at_datetime_utc"] ?? null,
 
                 // highlights as arrays
                 "qualifications"           => $r["job_highlights"]["Qualifications"] ?? [],
