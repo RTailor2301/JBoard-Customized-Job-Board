@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `IT202_F25_Jsearch` (
     `job_state` VARCHAR(128),
 
     `job_description` TEXT,
-    `job_is_remote` BOOLEAN,
+    `job_is_remote` tinyint(1) DEFAULT '1',
     `job_posted_at_datetime_utc` DATETIME,
     
     `is_api` tinyint(1) DEFAULT '1',

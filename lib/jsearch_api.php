@@ -19,7 +19,7 @@ function fetch_jobs($query)
     $endpoint = "https://jsearch.p.rapidapi.com/search";
     $isRapidAPI = true;
     $rapidAPIHost = "jsearch.p.rapidapi.com";
-    //$result = get($endpoint, "JSEARCH_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
+    // $result = get($endpoint, "JSEARCH_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
 
     // example of cached data to save quotes, comment out get() if using cached data for testing
     $result = ["status" => 200, "response" => <<<'API'
