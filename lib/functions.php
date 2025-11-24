@@ -21,4 +21,5 @@ require(__DIR__ . "/reset_session.php");
 
 require(__DIR__ . "/api_helpers.php");
 require(__DIR__ . "/jsearch_api.php");
+require(__DIR__ . "/db_helpers.php");
 ?>
