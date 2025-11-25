@@ -6,6 +6,10 @@ if (empty($id)) {
     flash("Job ID not provided", "warning");
     die(header("Location:" . get_url("admin/list_jobs.php")));
 }
+if ($id <= 0) {
+    flash("Invalid id passed", "danger");
+    die(header("Location: " . get_url("admin/list_jobs.php")));
+}
 
 $db = getDB();
 
