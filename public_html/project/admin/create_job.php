@@ -167,7 +167,7 @@ if (isset($_POST["action"])) {
     </ul>
 
     <div id="fetch" class="tab-target">
-        <form method="POST">
+        <form method="POST" onsubmit="return validate(this)">
             <div>
                 <label for="jsearch_query">JSearch Query</label>
                 <input type="search" name="jsearch_query" id="jsearch_query" placeholder="Search jobs..." required>
@@ -176,9 +176,19 @@ if (isset($_POST["action"])) {
             <input type="submit" value="Fetch" class="btn btn-primary">
         </form>
     </div>
-
+    <script>
+        function validate(form) {
+            let isValid = true;
+            let input = form.jsearch_query.value;
+            if (input.length < 2) {
+                flash("Query should be longer than 1 character", "warning");
+                isValid = false;
+            }
+            return isValid;
+        }
+    </script>
     <div id="create" style="display:none;" class="tab-target">
-        <form method="POST">
+        <form method="POST" onsubmit="return validateCreate(this)">
             <div class="mb-3">
                 <label for="job_id">Job ID (unique)</label>
                 <input type="text" name="job_id" id="job_id" required maxlength="255">
@@ -251,6 +261,39 @@ if (isset($_POST["action"])) {
             <input type="hidden" name="action" value="create">
             <button type="submit" class="btn btn-primary">Create Job</button>
         </form>
+        <script>
+            function validateCreate(form) {
+                let isValid = true;
+
+                // Required: job_id and posted date
+                if (form.job_id.value.trim().length === 0) {
+                    flash("Job ID is required", "warning");
+                    isValid = false;
+                }
+
+                if (form.job_posted_at_datetime_utc.value.trim().length === 0) {
+                    flash("Posted At date is required", "warning");
+                    isValid = false;
+                }
+
+                if (form.job_title.value.trim().length < 2) {
+                    flash("Job Title should be at least 2 characters", "warning");
+                    isValid = false;
+                }
+
+                let url = form.job_apply_link.value.trim();
+                if (url.length > 0) {
+                    try {
+                        new URL(url); // If invalid it will throw
+                    } catch (e) {
+                        flash("Apply Link must be a valid URL", "warning");
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            }
+            </script>
     </div>
 </div>
 

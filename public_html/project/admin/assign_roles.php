@@ -89,15 +89,17 @@ if (isset($_POST["username"])) {
 <h3>Assign Roles</h3>
 <!-- search form -->
 <form method="POST">
-    <input type="search" name="username" placeholder="Username search" value="<?php se($username, false); ?>" />
-    <input type="submit" value="Search" />
+    <?php render_input(["type" => "text", "name" => "username", "id" => "username", "label" => "Username search", "rules" => ["required" => true]]); ?>
+
+    <input type="hidden" name="action" value="fetch">
+    <?php render_button(["text" => "Search", "type" => "submit"]); ?>
 </form>
 <!-- empty toggle form, inputs will use the form attribute to associate with this form -->
 <form id="toggleForm" method="POST"></form>
 <?php if (isset($username) && !empty($username)) : ?>
     <input form="toggleForm" type="hidden" name="username" value="<?php se($username, false); ?>" />
 <?php endif; ?>
-<table>
+<table class="table">
     <thead>
         <th>Users</th>
         <th>Roles to Assign</th>
@@ -106,7 +108,7 @@ if (isset($_POST["username"])) {
         <tr>
             <td>
                 <!-- nested table for users -->
-                <table>
+                <table class="table">
                     <?php foreach ($users as $user) : ?>
                         <tr>
                             <td>
@@ -131,7 +133,7 @@ if (isset($_POST["username"])) {
         </tr>
     </tbody>
 </table>
-<input form="toggleForm" type="submit" value="Toggle Roles" />
+<?php render_button(["text" => "Toggle Roles", "type" => "submit"]); ?>
 
 <?php
 //note we need to go up 1 more directory
