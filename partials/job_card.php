@@ -101,6 +101,12 @@ if (!isset($data)) {
                 </a>
             <?php endif; ?>
 
+            <!-- Details button added -->
+            <a href="<?php echo get_url("job_details.php"); ?>?id=<?php se($data, "id"); ?>" 
+               class="btn btn-secondary mt-2">
+                Details
+            </a>
+
         </div>
     </div>
 <?php endif; ?>
