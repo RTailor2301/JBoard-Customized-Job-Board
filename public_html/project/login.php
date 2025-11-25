@@ -1,20 +1,33 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+$form = [
+    [
+        "type" => "text",
+        "id" => "email",
+        "name" => "email",
+        "label" => "Email/Username",
+        "value" => se($_POST, "email", "", false),
+        "rules" => ["required" => true]
+    ],
+    [
+        "type" => "password",
+        "id" => "pw",
+        "name" => "password",
+        "label" => "Password",
+        "rules" => ["required" => true, "minlength" => 8]
+    ]
+];
 ?>
-<h3>Login</h3>
-<form onsubmit="return validate(this)" method="POST">
-    <div>
-        <label for="email">Email or Username</label>
-        <input id="email" type="text" name="email" required />
-    </div>
-    <div>
-        <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
-    </div>
-    <input type="submit" value="Login" />
-</form>
-<script>
-    function validate(form) {
+<div class="container-fluid">
+    <h3>Login</h3>
+    <form onsubmit="return validate(this)" method="POST">
+        <?php foreach ($form as $field): ?>
+            <?php render_input($field); ?>
+        <?php endforeach; ?>
+        <?php render_button(["text" => "Login", "type" => "submit"]); ?>
+    </form>
+    <script>
+        function validate(form) {
         //TODO 1: implement JavaScript validation (you'll do this on your own towards the end of Milestone1)
         //ensure it returns false for an error and true for success
         // rt524 11/10 checks both isValidEmail and isValidUsername in heleprs.js
@@ -35,7 +48,8 @@ require(__DIR__ . "/../../partials/nav.php");
         }
         return isValid;
     }
-</script>
+    </script>
+</div>
 <?php
 //TODO 2: add PHP Code
 if (isset($_POST["email"], $_POST["password"])) {
@@ -81,53 +95,55 @@ if (isset($_POST["email"], $_POST["password"])) {
 
     if (!$hasError) {
 
+        // TODO 4: Check password and fetch user
+        if (!$hasError) {
+            //TODO 4: Check password and fetch user
+            $db = getDB();
+            // fetch by email or username
+            $stmt = $db->prepare("SELECT id, email, password, username from Users where email = :email OR username = :email");
+            try {
+                $r = $stmt->execute([":email" => $email]);
+                if ($r) {
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $ambigify = false; // flag to indicate ambiguous login attempt (reduce TMI)
+                    if ($user) {
+                        $hash = $user["password"];
+                        unset($user["password"]);
+                        if (password_verify($password, $hash)) {
 
-        //TODO 4: Check password and fetch user
-        $db = getDB();
-        // fetch by email or username
-        $stmt = $db->prepare("SELECT id, email, password, username from Users where email = :email OR username = :email");
-        try {
-            $r = $stmt->execute([":email" => $email]);
-            if ($r) {
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                $ambigify = false; // flag to indicate ambiguous login attempt (reduce TMI)
-                if ($user) {
-                    $hash = $user["password"];
-                    unset($user["password"]);
-                    if (password_verify($password, $hash)) {
-
-                        $_SESSION["user"] = $user; // add the data to the active session
-                        try {
-                            //lookup potential roles
-                            $stmt = $db->prepare("SELECT Roles.name FROM Roles
+                            $_SESSION["user"] = $user; // add the data to the active session
+                            try {
+                                //lookup potential roles
+                                $stmt = $db->prepare("SELECT Roles.name FROM Roles
                                 JOIN UserRoles on Roles.id = UserRoles.role_id
                                 where UserRoles.user_id = :user_id and Roles.is_active = 1 
                                 and UserRoles.is_active = 1");
-                            $stmt->execute([":user_id" => get_user_id()]);
-                            $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
-                        } catch (Exception $e) {
-                            error_log("Error fetching roles: " . var_export($e, true));
-                        }
-                        //save roles or empty array
-                        $_SESSION["user"]["roles"] = isset($roles) ? $roles : [];
+                                $stmt->execute([":user_id" => get_user_id()]);
+                                $roles = $stmt->fetchAll(PDO::FETCH_ASSOC); //fetch all since we'll want multiple
+                            } catch (Exception $e) {
+                                error_log("Error fetching roles: " . var_export($e, true));
+                            }
+                            //save roles or empty array
+                            $_SESSION["user"]["roles"] = isset($roles) ? $roles : [];
 
-                        die(header("Location: landing.php"));
+                            die(header("Location: landing.php"));
+                        } else {
+                            //echo "Invalid password<br>";
+                            $ambigify = true; // ambiguous login attempt
+                        }
                     } else {
-                        //echo "Invalid password<br>";
+                        //echo "Email not found<br>";
                         $ambigify = true; // ambiguous login attempt
                     }
-                } else {
-                    //echo "Email not found<br>";
-                    $ambigify = true; // ambiguous login attempt
+                    if ($ambigify) {
+                        flash("Invalid login attempt. Please check your email and password.", "danger");
+                    }
                 }
-                if ($ambigify) {
-                    flash("Invalid login attempt. Please check your email and password.", "danger");
-                }
+            } catch (Exception $e) {
+                //echo "There was an error logging in<br>"; // user-friendly message
+                flash("There was an error logging in. Please try again later.", "danger");
+                error_log("Login Error: " . var_export($e, true)); // log the technical error for debugging
             }
-        } catch (Exception $e) {
-            //echo "There was an error logging in<br>"; // user-friendly message
-            flash("There was an error logging in. Please try again later.", "danger");
-            error_log("Login Error: " . var_export($e, true)); // log the technical error for debugging
         }
     }
 }
