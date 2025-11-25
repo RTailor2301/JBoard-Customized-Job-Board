@@ -34,6 +34,63 @@ if (isset($_POST["action"])) {
             flash("You must provide a jsearch_query", "warning");
         }
     } else if ($action === "create") {
+        $hasError = false;
+
+        // check the required fields
+        $job_id = se($_POST, "job_id", "", false);
+        $job_title = se($_POST, "job_title", "", false);
+        $job_posted_at = se($_POST, "job_posted_at_datetime_utc", "", false);
+
+        if (empty($job_id)) {
+            flash("Job ID must not be empty.", "danger");
+            $hasError = true;
+        }
+
+        if (empty($job_title)) {
+            flash("Job Title must not be empty.", "danger");
+            $hasError = true;
+        }
+
+        if (empty($job_posted_at)) {
+            flash("Posted At date must not be empty.", "danger");
+            $hasError = true;
+        }
+
+        if (!empty($_POST["job_id"]) && strlen($_POST["job_id"]) > 255) {
+            flash("Job ID must be 255 characters or less.", "danger");
+            $hasError = true;
+        }
+
+        if (!empty($_POST["job_title"]) && strlen($_POST["job_title"]) < 2) {
+            flash("Job Title must be at least 2 characters long.", "danger");
+            $hasError = true;
+        }
+
+        if (!empty($_POST["employer_name"]) && strlen($_POST["employer_name"]) > 255) {
+            flash("Employer Name must be 255 characters or less.", "danger");
+            $hasError = true;
+        }
+
+        if (!empty($_POST["country"]) && (strlen($_POST["country"]) < 2 || strlen($_POST["country"]) > 100)) {
+            flash("Country must be between 2 and 100 characters.", "danger");
+            $hasError = true;
+        }
+
+        if (isset($_POST["job_is_remote"]) && !in_array($_POST["job_is_remote"], ["0", "1"])) {
+            flash("Remote must be either 'Yes' or 'No'.", "danger");
+            $hasError = true;
+        }
+
+        if (!empty($_POST["job_posted_at_datetime_utc"])) {
+            $dt = date_create($_POST["job_posted_at_datetime_utc"]);
+            if (!$dt) {
+                flash("Posted At date is invalid.", "danger");
+                $hasError = true;
+            }
+        }
+        if ($hasError) {
+            return; // stop execution before DB insert
+        }
         $jobData = [];
         foreach ($_POST as $k => $v) {
             // remove keys that aren't part of your data
@@ -262,6 +319,7 @@ if (isset($_POST["action"])) {
             <button type="submit" class="btn btn-primary">Create Job</button>
         </form>
         <script>
+            // rt524 11/24 validation of form, checks req fields and html validations again
             function validateCreate(form) {
                 let isValid = true;
 
@@ -284,7 +342,7 @@ if (isset($_POST["action"])) {
                 let url = form.job_apply_link.value.trim();
                 if (url.length > 0) {
                     try {
-                        new URL(url); // If invalid it will throw
+                        new URL(url); 
                     } catch (e) {
                         flash("Apply Link must be a valid URL", "warning");
                         isValid = false;

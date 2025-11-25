@@ -57,6 +57,36 @@ try {
 // rt524 11/23 after form submit, updates valid data in all tables, special handing for quals and resps
 // update columns
 if (isset($_POST["action"]) && $_POST["action"] === "update") {
+    $hasError = false;
+
+    $job_title = se($_POST, "job_title", "", false);
+    $job_posted_at = se($_POST, "job_posted_at_datetime_utc", "", false);
+
+    if (empty($job_title)) {
+        flash("Job Title must not be empty.", "danger");
+        $hasError = true;
+    }
+
+    if (empty($job_posted_at)) {
+        flash("Posted At date must not be empty.", "danger");
+        $hasError = true;
+    }
+
+    if (!empty($job_title) && strlen($job_title) < 2) {
+        flash("Job Title must be at least 2 characters long.", "danger");
+        $hasError = true;
+    }
+
+    if (!empty($_POST["employer_name"]) && strlen($_POST["employer_name"]) > 255) {
+        flash("Employer Name must be 255 characters or less.", "danger");
+        $hasError = true;
+    }
+
+    if ($hasError) {
+        $quals = $_POST["qualifications"] ?? $quals;
+        $resps = $_POST["responsibilities"] ?? $resps;
+        return;
+    }
     $allowed = [
         "country", "job_title", "employer_name", "job_publisher",
         "job_employment_type", "job_apply_link", "job_location", "job_city",
@@ -130,7 +160,7 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
 <div class="container-fluid">
     <h3>Edit Job</h3>
 
-    <form method="POST">
+    <form method="POST" onsubmit="return validate(this)">
         <input type="hidden" name="action" value="update">
 
         <div class="mb-3">
@@ -143,7 +173,8 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
         </div>
         <div class="mb-3">
             <label for="job_title">Job Title</label>
-            <input class="form-control" id="job_title" name="job_title" type="text" value="<?php se($job, 'job_title'); ?>">
+            <input class="form-control" id="job_title" name="job_title" type="text" 
+            value="<?php se($job, 'job_title'); ?>" required minlength="2">
         </div>
         <div class="mb-3">
             <label for="employer_name">Employer Name</label>
@@ -188,7 +219,7 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
         <div class="mb-3">
             <label for="job_posted_at_datetime_utc">Posted At (UTC)</label>
             <input class="form-control" id="job_posted_at_datetime_utc" name="job_posted_at_datetime_utc" type="text"
-                value="<?php se($job, 'job_posted_at_datetime_utc'); ?>">
+                value="<?php se($job, 'job_posted_at_datetime_utc'); ?>" required>
         </div>
         <div class="mb-3">
             <label for="is_api">is_api</label>
@@ -226,6 +257,41 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
         <button type="submit">Save Changes</button>
         <a href="<?= get_url("admin/list_jobs.php") ?>">Back</a>
     </form>
+
+    <script>
+        // rt524 11/24 validations simimlar to create_job, match html reqs
+        function validate(form) {
+            let isValid = true;
+
+            if (form.job_title.value.trim().length === 0) {
+                flash("Job Title is required", "warning");
+                isValid = false;
+            }
+
+            if (form.job_posted_at_datetime_utc.value.trim().length === 0) {
+                flash("Posted At date is required", "warning");
+                isValid = false;
+            }
+
+            if (form.job_title.value.trim().length > 0 && form.job_title.value.trim().length < 2) {
+                flash("Job Title should be at least 2 characters", "warning");
+                isValid = false;
+            }
+
+            // url validation using URL(url)
+            let url = form.job_apply_link.value.trim();
+            if (url.length > 0) {
+                try {
+                    new URL(url); // Throws if invalid
+                } catch (e) {
+                    flash("Apply Link must be a valid URL", "warning");
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+    </script>
 </div>
 
 <script>
