@@ -19,10 +19,10 @@ function fetch_jobs($query)
     $endpoint = "https://jsearch.p.rapidapi.com/search";
     $isRapidAPI = true;
     $rapidAPIHost = "jsearch.p.rapidapi.com";
-    // $result = get($endpoint, "JSEARCH_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
+    $result = get($endpoint, "JSEARCH_API_KEY", $data, $isRapidAPI, $rapidAPIHost);
 
     // example of cached data to save quotes, comment out get() if using cached data for testing
-    $result = ["status" => 200, "response" => <<<'API'
+    /*$result = ["status" => 200, "response" => <<<'API'
         {"status":"OK",
         "request_id":"0568e6ef-f7d7-41e3-86f1-f094a8707f6a",
         "parameters":
@@ -96,7 +96,7 @@ function fetch_jobs($query)
             "job_onet_job_zone":"4"},
             {"job_id":"HyDn_scsWb8q1dzeAAAAAA==","job_title":"Lead Software Engineer, Back End","employer_name":"Capital One","employer_logo":null,"employer_website":"https://www.capitalone.com","job_publisher":"Women For Hire- Job Board","job_employment_type":"Full-time and Part-time","job_employment_types":["FULLTIME","PARTTIME"],"job_apply_link":"https://jobs.womenforhire.com/job/usa/paramus-nj/lead-software-engineer-back-end-594256/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic","job_apply_is_direct":false,"apply_options":[{"publisher":"Women For Hire- Job Board","apply_link":"https://jobs.womenforhire.com/job/usa/paramus-nj/lead-software-engineer-back-end-594256/?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic","is_direct":false}],"job_description":"Lead Software Engineer, Back End\n\nDo you love building and pioneering in the technology space? …","job_is_remote":false,"job_posted_at":"20 hours ago","job_posted_at_timestamp":1763348400,"job_posted_at_datetime_utc":"2025-11-17T03:00:00.000Z","job_location":"Paramus, NJ","job_city":"Paramus","job_state":"New Jersey","job_country":"US","job_latitude":40.9482792,"job_longitude":-74.0672769,"job_benefits":["health_insurance"],"job_google_link":"https://www.google.com/search?q=jobs&gl=us&hl=en&udm=8#vhid=vt%3D20/docid%3DHyDn_scsWb8q1dzeAAAAAA%3D%3D&vssid=jobs-detail-viewer","job_salary":null,"job_min_salary":null,"job_max_salary":null,"job_salary_period":null,"job_highlights":{"Qualifications":["Bachelor’s Degree","At least 4 years of professional software engineering experience","At least 1 year experience with cloud computing"]},"job_onet_soc":"15113200","job_onet_job_zone":"4"},{"job_id":"khUcqbMXiFdPpH_QAAAAAA==","job_title":"SD-WAN (Versa) Engineer- W2 only","employer_name":"Jobs via Dice","employer_logo":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9CC1NlnLA7sshF1s1dqKvk8U495jsMwImnyPP&s=0","employer_website":null,"job_publisher":"LinkedIn","job_employment_type":"Full-time","job_employment_types":["FULLTIME"],"job_apply_link":"https://www.linkedin.com/jobs/view/sd-wan-versa-engineer-w2-only-at-jobs-via-dice-4322779331?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic","job_apply_is_direct":false,"apply_options":[{"publisher":"LinkedIn","apply_link":"https://www.linkedin.com/jobs/view/sd-wan-versa-engineer-w2-only-at-jobs-via-dice-4322779331?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic","is_direct":false}],"job_description":"Dice is the leading career destination …","job_is_remote":false,"job_posted_at":"4 hours ago","job_posted_at_timestamp":1763406000,"job_posted_at_datetime_utc":"2025-11-17T19:00:00.000Z","job_location":"Mt Laurel Township, NJ","job_city":"Mt Laurel Township","job_state":"New Jersey","job_country":"US","job_latitude":39.9241516,"job_longitude":-74.9499966,"job_benefits":null,"job_google_link":"https://www.google.com/search?q=jobs&gl=us&hl=en&udm=8#vhid=vt%253D20/docid%253DkhUcqbMXiFdPpH_QAAAAAA%253D%253D&vssid=jobs-detail-viewer","job_salary":null,"job_min_salary":null,"job_max_salary":null,"job_salary_period":null,"job_highlights":{"Qualifications":["Hands-on experience on Versa SD-WAN Solution","Experience with AWS Cloud & containerized platforms (Docker/Kubernetes)","Strong Networking fundamentals …"]},"job_onet_soc":"53601100","job_onet_job_zone":"1"}]}
         API
-    ];
+    ];*/
 
     error_log("API Response: " . var_export($result, true));
     if (se($result, "status", 400, false) == 200 && isset($result["response"])) {
