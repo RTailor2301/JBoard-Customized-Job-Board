@@ -9,5 +9,9 @@ function reset_session()
     }
     session_unset();
     session_destroy();
-    session_start();
+    if (headers_sent($file, $line)) {
+        error_log("Headers already sent in $file on line $line");
+    } else {
+        session_start();
+    }
 }
