@@ -57,7 +57,7 @@ if (!isset($data)) {
                         Posted:
                         <?php se($data, "job_posted_at_datetime_utc", "N/A"); ?>
                     </li>
-
+                    <!--
                     <li class="list-group-item">
                         Description:
                         <br>
@@ -91,7 +91,7 @@ if (!isset($data)) {
                         }
                         ?>
                     </li>
-
+                    -->    
                 </ul>
             </div>
 

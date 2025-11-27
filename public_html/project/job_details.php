@@ -98,6 +98,12 @@ $resp = !empty($job["responsibilities"]) ? explode("||", $job["responsibilities"
             <?php endif; ?>
 
             <?php if (has_role("Admin")) : ?>
+                <a href="<?php echo get_url("admin/edit_job.php"); ?>?id=<?php se($job, "id"); ?>"
+                    class="btn btn-warning mt-2">
+                    Edit
+                </a>
+
+                </a>
                 <form method="POST" style="display:inline-block;">
                     <button type="submit" name="delete" class="btn btn-danger mt-2"
                             onclick="return confirm('Are you sure you want to delete this job?');">
