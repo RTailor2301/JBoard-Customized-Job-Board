@@ -4,6 +4,9 @@ if (is_logged_in(true)) {
     error_log("Session data: " . var_export($_SESSION, true));
 }
 
+// rt524 12/2 applies the same filtering logic as landing.php
+// query loads the user jobs table and matches it based on the current user's id
+
 $allowed_columns = [
     "job_title",
     "employer_name",

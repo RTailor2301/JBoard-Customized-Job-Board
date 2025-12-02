@@ -5,6 +5,31 @@ if (!isset($data)) {
 }
 ?>
 <?php if (isset($data)) : ?>
+
+    <?php
+    // rr524 12/2
+    // check if job saved already
+    $is_saved = false;
+    if (is_logged_in()) {
+        try {
+            $db = getDB();
+            $stmt = $db->prepare("
+                SELECT 1 FROM IT202_F25_User_Jobs 
+                WHERE user_id = :uid 
+                  AND job_id = :jid 
+                  AND is_active = 1
+            ");
+            $stmt->execute([
+                ":uid" => get_user_id(),
+                ":jid" => $data["job_id"]
+            ]);
+            $is_saved = $stmt->fetch() ? true : false;
+        } catch (Exception $e) {
+            error_log("Error checking saved job: " . var_export($e, true));
+        }
+    }
+    ?>
+
     <div class="card mx-auto my-3" style="width: 20rem;">
 
         <!-- Icon area -->
@@ -57,41 +82,6 @@ if (!isset($data)) {
                         Posted:
                         <?php se($data, "job_posted_at_datetime_utc", "N/A"); ?>
                     </li>
-                    <!--
-                    <li class="list-group-item">
-                        Description:
-                        <br>
-                        <?php se($data, "job_description", "N/A"); ?>
-                    </li>
-
-                    <li class="list-group-item">
-                        Qualifications:
-                        <br>
-                        <?php
-                        if (!empty($data["qualifications"])) {
-                            foreach ($data["qualifications"] as $q) {
-                                echo "- " . htmlspecialchars($q["qualification"]) . "<br>";
-                            }
-                        } else {
-                            echo "N/A";
-                        }
-                        ?>
-                    </li>
-
-                    <li class="list-group-item">
-                        Responsibilities:
-                        <br>
-                        <?php
-                        if (!empty($data["responsibilities"])) {
-                            foreach ($data["responsibilities"] as $r) {
-                                echo "- " . htmlspecialchars($r["responsibility"]) . "<br>";
-                            }
-                        } else {
-                            echo "N/A";
-                        }
-                        ?>
-                    </li>
-                    -->    
                 </ul>
             </div>
 
@@ -107,6 +97,17 @@ if (!isset($data)) {
                 Details
             </a>
 
+            <!-- Save jobs button, only interactable if not saved -->
+            <?php if (is_logged_in()) : ?>
+                <?php if ($is_saved): ?>
+                    <button class="btn btn-success mt-2" disabled>Saved</button>
+                <?php else: ?>
+                    <form method="POST" action="<?php echo get_url('save_job.php'); ?>">
+                        <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
+                        <button type="submit" class="btn btn-success mt-2">Save Job</button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 <?php endif; ?>
