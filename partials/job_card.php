@@ -100,11 +100,14 @@ if (!isset($data)) {
             <!-- Save jobs button, only interactable if not saved -->
             <?php if (is_logged_in()) : ?>
                 <?php if ($is_saved): ?>
-                    <button class="btn btn-success mt-2" disabled>Saved</button>
+                    <form method="POST" action="<?php echo get_url('unsave_job.php'); ?>">
+                        <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
+                        <button type="submit" class="btn btn-success mt-2">Unsave</button>
+                    </form>
                 <?php else: ?>
                     <form method="POST" action="<?php echo get_url('save_job.php'); ?>">
                         <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
-                        <button type="submit" class="btn btn-success mt-2">Save Job</button>
+                        <button type="submit" class="btn btn-success mt-2">Save</button>
                     </form>
                 <?php endif; ?>
             <?php endif; ?>

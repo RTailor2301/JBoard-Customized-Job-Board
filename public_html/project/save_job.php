@@ -16,8 +16,7 @@ $user_id = get_user_id();
 $db = getDB();
 
 // added on duplicate key clause for adding from different places bug
-$stmt = $db->prepare("
-    INSERT INTO IT202_F25_User_Jobs (user_id, job_id)
+$stmt = $db->prepare("INSERT INTO IT202_F25_User_Jobs (user_id, job_id)
     VALUES (:user_id, :job_id)
     ON DUPLICATE KEY UPDATE is_active = 1
 ");
