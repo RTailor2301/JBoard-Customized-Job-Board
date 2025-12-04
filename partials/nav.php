@@ -84,6 +84,8 @@ require(__DIR__ . "/../lib/functions.php");
                             </li>
                             <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/list_jobs.php', true); ?>">List Jobs</a>
                             </li>
+                            <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/all_user_assoc.php', true); ?>">User Jobs</a>
+                            </li>
                         </ul>
                     </li>
                 <?php endif; ?>
