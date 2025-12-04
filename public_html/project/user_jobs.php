@@ -4,6 +4,28 @@ if (is_logged_in(true)) {
     error_log("Session data: " . var_export($_SESSION, true));
 }
 
+// rt524 12/4 clears all saved jobs by setting all active jobs to 0 with button
+
+$user_id = get_user_id();
+
+if (isset($_POST["clear_saved"]) && $_POST["clear_saved"] === "clear_saved") {
+    $db = getDB();
+    $stmt = $db->prepare("UPDATE IT202_F25_User_Jobs SET is_active = 0 WHERE user_id = :uid");
+    $stmt->execute([":uid" => $user_id]);
+    flash("All saved jobs have been removed", "success");
+    die(header("Location:" . get_url("user_jobs.php")));
+}
+
+// rt524 12/4 counts total saved jobs, only active ones
+$db = getDB();
+$stmt = $db->prepare("SELECT COUNT(*) AS total_saved 
+                      FROM IT202_F25_User_Jobs 
+                      WHERE user_id = :uid 
+                      AND is_active = 1");
+$stmt->execute([":uid" => $user_id]);
+$total_saved = $stmt->fetchColumn();
+
+
 // rt524 12/2 applies the same filtering logic as landing.php
 // query loads the user jobs table and matches it based on the current user's id
 
@@ -90,6 +112,7 @@ if (count($_GET) > 0) {
     $query .= " ORDER BY $column $order";
 }
 
+
 // LIMIT
 $limit = se($_GET, "limit", 10, false);
 if (!empty($limit) && is_numeric($limit)) {
@@ -157,6 +180,8 @@ if ($saved_ids) {
     $stmt->execute($saved_ids);
     $results = $stmt->fetchAll();
 }
+$filtered_count = count($results);
+
 
 // FORM
 $cols = array_map(fn($col) => [$col => $col], $allowed_columns);
@@ -234,6 +259,11 @@ $form = [
 ?>
 <div class="container-fluid">
     <h1>My Saved Jobs</h1>
+    <!-- rt524 12/4/25 shows stats, total saved from query and filtered count from counting results of filter-->
+    <h2>
+        <strong>Total Saved Jobs:</strong> <?= $total_saved ?> <br>
+        <strong>Showing:</strong> <?= $filtered_count ?> job(s)
+    </h2>
     <form>
         <div class="row">
             <?php foreach ($form as $field): ?>
@@ -244,6 +274,10 @@ $form = [
         </div>
         <?php render_button(["text" => "Search", "type" => "submit"]); ?>
         <a href="?" class="btn btn-secondary">Reset</a>
+    </form>
+    <form method="POST" onsubmit="return confirm('Remove ALL saved jobs?');">
+        <input type="hidden" name="clear_saved" value="clear_saved">
+        <button class="btn btn-danger">Clear All Saved Jobs</button>
     </form>
 
     <?php if (count($results) == 0): ?>
