@@ -29,7 +29,7 @@ try {
     }
 
     // is active to 0
-    $update = $db->prepare("UPDATE IT202_F25_User_Jobs SET is_active = 0, WHERE id = :id");
+    $update = $db->prepare("UPDATE IT202_F25_User_Jobs SET is_active = 0 WHERE id = :id");
     $update->execute([":id" => $assoc_id]);
 
     flash("Association removed for user_id {$row['user_id']} and job_id {$row['job_id']}", "success");
