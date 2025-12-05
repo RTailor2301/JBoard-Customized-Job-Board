@@ -21,6 +21,15 @@ $filter_username = trim($_GET["username"] ?? "");
 $filter_clause = "";
 $params = [];
 
+
+// Limit filter (clean + safe)
+$limit = se($_GET, "limit", 10, false);
+if ($limit < 1 || $limit > 100) {
+    $limit = 10;
+}
+$params[":limit"] = $limit;
+
+
 if ($filter_username) {
     $filter_clause = " AND u.username LIKE :uname ";
     $params[":uname"] = "%$filter_username%";
@@ -52,14 +61,20 @@ JOIN IT202_F25_Jsearch j ON j.job_id = uj.job_id
 WHERE 1=1 AND uj.is_active = 1
 $filter_clause
 ORDER BY uj.created DESC
-LIMIT 500;
+LIMIT :limit;
 ";
 
 $stmt = $db->prepare($query);
 $results = [];
 
 try {
-    $stmt->execute($params);
+    $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+
+    if ($filter_username) {
+        $stmt->bindValue(":uname", "%$filter_username%", PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     error_log("Error fetching associations " . var_export($e, true));
@@ -67,7 +82,23 @@ try {
 }
 
 $filtered_count = count($results);
-
+$form = [
+    [
+        "type" => "text",
+        "id" => "job_title",
+        "name" => "job_title",
+        "label" => "Job Title",
+        "value" => se($_GET, "job_title", "", false),
+    ],
+    [
+        "type" => "number",
+        "id" => "limit",
+        "name" => "limit",
+        "label" => "Limit",
+        "value" => se($_GET, "limit", "10", false),
+        "rules" => ["min" => 1, "max" => 100]
+    ]
+];
 ?>
 
 <div class="container-fluid">
@@ -78,7 +109,17 @@ $filtered_count = count($results);
             <strong>Showing:</strong> <?= $filtered_count ?> job(s)
         </h2>
     </h1>
-
+    <form>
+        <div class="row">
+            <?php foreach ($form as $field): ?>
+                <div class="col">
+                    <?php render_input($field); ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php render_button(["text" => "Search", "type" => "submit"]); ?>
+        <a href="?" class="btn btn-secondary">Reset</a>
+    </form>
     <form method="GET" class="row mb-3">
         <div class="col-auto">
             <label class="form-label">Filter by Username (partial match):</label>
@@ -87,6 +128,7 @@ $filtered_count = count($results);
         <div class="col-auto align-self-end">
             <button class="btn btn-primary">Apply Filter</button>
         </div>
+
 
         <!-- rt524 12/4 appends the filter to url for deleting -->
         <?php if ($filter_username): ?>
