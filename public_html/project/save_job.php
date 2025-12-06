@@ -34,4 +34,4 @@ try {
 }
 
 // flash("Job saved successfully!", "success");
-die(header("Location:" . get_url("landing.php")));
+redirect("landing.php");
