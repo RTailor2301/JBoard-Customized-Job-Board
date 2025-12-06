@@ -11,6 +11,17 @@ if (!has_role("Admin")) {
 
 $db = getDB();
 
+$stmt = $db->prepare("SELECT COUNT(*) AS total
+    FROM IT202_F25_Jsearch j
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM IT202_F25_User_Jobs uj
+        WHERE uj.job_id = j.id AND uj.is_active = 1
+    )
+");
+$stmt->execute();
+$total_jobs_without_users = $stmt->fetchColumn();
+
 $allowed_columns = [
     "job_title",
     "employer_name",
@@ -139,8 +150,7 @@ foreach ($params as $key => $v) {
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$total_jobs_without_users = count($results);
-$total_items = $total_jobs_without_users;
+$total_items = count($results);
 $form = [
     [
         "type" => "text",
