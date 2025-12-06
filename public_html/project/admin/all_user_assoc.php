@@ -22,7 +22,7 @@ $filter_clause = "";
 $params = [];
 
 
-// Limit filter (clean + safe)
+// limit
 $limit = se($_GET, "limit", 10, false);
 if ($limit < 1 || $limit > 100) {
     $limit = 10;
