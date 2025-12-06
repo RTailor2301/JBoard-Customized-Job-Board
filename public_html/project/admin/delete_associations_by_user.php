@@ -3,7 +3,7 @@ require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission", "warning");
-    die(header("Location: " . get_url("landing.php")));
+    redirect("landing.php");
 }
 
 // rt524 12/4 gets username and sets all is_active = 0 with partial matched username
@@ -12,7 +12,7 @@ $username = $_GET["username"];
 
 if (!$username) {
     flash("No username filter provided", "danger");
-    die(header("Location: " . get_url("admin/all_user_assoc.php")));
+    redirect("admin/all_user_assoc.php");
 }
 
 $db = getDB();
@@ -33,5 +33,5 @@ try {
     flash("Error removing associations", "danger");
 }
 
-die(header("Location: " . get_url("admin/all_user_assoc.php")));
+redirect("admin/all_user_assoc.php");
 

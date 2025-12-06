@@ -3,7 +3,7 @@ require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location:" . get_url("landing.php")));
+    redirect("landing.php");
 }
 
 // rt524 12/5 mainly the same as all user assoc but with landing.php filters applied for easier search

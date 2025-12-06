@@ -13,7 +13,7 @@ if (isset($_POST["clear_saved"]) && $_POST["clear_saved"] === "clear_saved") {
     $stmt = $db->prepare("UPDATE IT202_F25_User_Jobs SET is_active = 0 WHERE user_id = :uid");
     $stmt->execute([":uid" => $user_id]);
     flash("All saved jobs have been removed", "success");
-    die(header("Location:" . get_url("user_jobs.php")));
+    redirect("user_jobs.php");
 }
 
 // rt524 12/4 counts total saved jobs, only active ones

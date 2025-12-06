@@ -4,7 +4,7 @@ require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location: " . get_url("landing.php")));
+    redirect("admin/all_user_assoc.php");
 }
 
 // rt524 12/4 gets the assoc_id from the all users assoc page 
@@ -13,7 +13,7 @@ if (!has_role("Admin")) {
 $assoc_id = se($_GET, "assoc_id", "", false);
 if ((int)$assoc_id <= 0) {
     flash("Invalid association id provided", "danger");
-    die(header("Location:" . get_url("admin/all_user_assoc.php")));
+    redirect("admin/all_user_assoc.php");
 }
 
 $db = getDB();
@@ -25,7 +25,7 @@ try {
 
     if (!$row) {
         flash("Association not found", "warning");
-        die(header("Location: " . get_url("admin/all_user_assoc.php")));
+        redirect("admin/all_user_assoc.php");
     }
 
     // is active to 0
@@ -39,4 +39,4 @@ try {
     flash("Error removing association: " . $e->getMessage(), "danger");
     
 }
-die(header("Location: " . get_url("admin/all_user_assoc.php")));
+redirect("admin/all_user_assoc.php");

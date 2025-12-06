@@ -4,7 +4,7 @@ is_logged_in(true);
 
 if (!isset($_POST["job_id"])) {
     flash("Missing job id", "danger");
-    die(header("Location: " . get_url("landing.php")));
+    redirect("landing.php");
 }
 
 $job_id = ($_POST["job_id"]);
@@ -27,4 +27,4 @@ try {
     flash("Error unsaving job", "danger");
 }
 
-die(header("Location:" . get_url("landing.php")));
+redirect("landing.php");

@@ -4,11 +4,11 @@ require(__DIR__ . "/../../partials/nav.php");
 $id = se($_GET, "id", "", false);
 if (empty($id)) {
     flash("Job ID not provided", "warning");
-    die(header("Location:" . get_url("admin/list_jobs.php")));
+    redirect("admin/list_jobs.php");
 }
 if ($id <= 0) {
     flash("Invalid id passed", "danger");
-    die(header("Location: " . get_url("admin/list_jobs.php")));
+    redirect("admin/list_jobs.php");
 }
 
 $db = getDB();
@@ -19,7 +19,7 @@ if (isset($_POST["delete"]) && has_role("Admin")) {
         $stmt = $db->prepare("DELETE FROM IT202_F25_Jsearch WHERE id = :id");
         $stmt->execute([":id" => $id]);
         flash("Job deleted successfully", "success");
-        die(header("Location:" . get_url("landing.php")));
+        redirect("landing.php");
     } catch (PDOException $e) {
         error_log("Delete error: " . $e->getMessage());
         flash("Error deleting job", "danger");
@@ -46,7 +46,7 @@ $job = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$job) {
     flash("Job not found", "warning");
-    die(header("Location:" . get_url("admin/list_jobs.php")));
+    redirect("admin/list_jobs.php");
 }
 
 // same logic as job list

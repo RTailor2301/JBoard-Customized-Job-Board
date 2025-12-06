@@ -185,7 +185,7 @@ if ($user && count($user) > 0) {
     }
 } else {
     flash("User not found", "danger");
-    die(header("Location:" . get_url("landing.php")));;
+    redirect("landing.php");
 }
 // fetch number of saved jobs
 $stmt = $db->prepare("SELECT COUNT(*) AS total_jobs
