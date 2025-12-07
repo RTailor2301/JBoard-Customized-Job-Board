@@ -1,15 +1,29 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
-if (!is_logged_in()) {
+// removing makes it truly public, keeping it makes it login-public
+/*if (!is_logged_in()) {
     die(header("Location: login.php"));
-}
+}*/
 ?>
 <?php
 $user_id = get_user_id(); // get id from session
 $email = get_user_email(); // get email from session
 $username = get_username(); // get username from session
+// changes for public profile
+if (isset($_GET["id"])) {
+    $user_id = se($_GET, "id", -1, false);
+    if ($user_id <= 0) {
+        flash("Invalid user ID", "warning");
+        redirect(get_url("landing.php"));
+    }
+}
+$is_me = ($user_id == get_user_id()); // check if viewing own profile
+$is_edit = isset($_GET["edit"]);
+
+
+
 // handle email/username update
-if (isset($_POST["email"], $_POST["username"])) {
+if ($is_me && $is_edit && isset($_POST["email"], $_POST["username"])) {
     $new_email = se($_POST, "email", null, false);
     $new_username = se($_POST, "username", null, false);
     $hasError = false;
@@ -57,7 +71,8 @@ if (isset($_POST["email"], $_POST["username"])) {
         }
         if ($saved) {
             //select fresh data from table
-            $stmt = $db->prepare("SELECT email, username from Users where id = :id LIMIT 1");
+            // moved after the update blocks
+            /* $stmt = $db->prepare("SELECT email, username from Users where id = :id LIMIT 1");
             try {
                 $stmt->execute([":id" => $user_id]);
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -79,12 +94,12 @@ if (isset($_POST["email"], $_POST["username"])) {
             } catch (Exception $e) {
                 flash("An unexpected error occurred, please try again", "danger");
                 error_log("Unexpected Error fetching user details: " . var_export($e, true));
-            }
+            }*/
         }
     }
 }
 // handle password update
-if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassword"])) {
+if ($is_me && $is_edit && isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassword"])) {
 
     //check/update password
     $current_password = se($_POST, "currentPassword", null, false);
@@ -94,7 +109,7 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
     $can_update = !empty($current_password) && !empty($new_password) && !empty($confirm_password);
     if ($can_update) {
         // check that new matches confirm (i.e., no typos)
-        if (!is_valid_confirm($new_password,$confirm_password)) {
+        if (!is_valid_confirm($new_password, $confirm_password)) {
             flash("New passwords don't match", "warning");
         } else {
             //validate current password against password rules
@@ -146,71 +161,141 @@ if (isset($_POST["currentPassword"], $_POST["newPassword"], $_POST["confirmPassw
         }
     }
 }
-?>
-<h3>Profile</h3>
-<form method="POST" onsubmit="return validate(this);">
-    <div class="mb-3">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="<?php se($email); ?>" />
-    </div>
-    <div class="mb-3">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" value="<?php se($username); ?>" />
-    </div>
-    <!-- DO NOT PRELOAD PASSWORD -->
-    <div>Password Reset</div>
-    <div class="mb-3">
-        <label for="cp">Current Password</label>
-        <input type="password" name="currentPassword" id="cp" />
-    </div>
-    <div class="mb-3">
-        <label for="np">New Password</label>
-        <input type="password" name="newPassword" id="np" />
-    </div>
-    <div class="mb-3">
-        <label for="conp">Confirm Password</label>
-        <input type="password" name="confirmPassword" id="conp" />
-    </div>
-    <input type="submit" value="Update Profile" name="save" />
-</form>
 
-<script>
-    function validate(form) {
-        // rt524 11/10 uses the validate password, email, and username found in helpers.js
-        // checks for length, and valid characters
-        // uses regex to check these values to ensure their validity, also checks the new password against the current password
-        let pw = form.newPassword.value;
-        let con = form.confirmPassword.value;
-        let isValid = true;
-        //TODO add other client side validation....
-        let email = form.email.value;
-        let username = form.username.value;
-        let cp = form.cp.value;
+// get public data
+// $user = selectAll("SELECT email, username, wins, losses, points, u.created FROM Users u 
+// LEFT JOIN `IT202-M25-UserStats` us ON u.id = us.user_id WHERE u.id = :id", [":id" => $user_id]);
+// get public data
+$db = getDB();
+$stmt = $db->prepare("SELECT email, username, created 
+    FROM Users 
+    WHERE id = :id 
+    LIMIT 1");
+$stmt->execute([":id" => $user_id]);
+$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (!isValidPassword(pw)) {
-            flash("Password must be at least 8 characters", "warning");
-            isValid = false;
-        }
-        if (!isValidEmail(email)) {
-            flash("Email is not valid", "warning");
-            isValid = false;
-        }
-        if (!isValidUsername(username)) {
-            flash("Username can only contain letters, numbers, _ and -. Must be between 3-30 characters", "warning");
-            isValid = false;
-        }
+if ($user && count($user) > 0) {
+    $user = $user[0]; // get the first (and only) result
+    $username = se($user, "username", "", false);
+    if ($is_me) {
+        $email = se($user, "email", "", false); // only set email if it's the user's own profile
 
-        //example of using flash via javascript
-        //find the flash container, create a new element, appendChild
-        // NOTE: we'll extract the flash code to a function later
-        if (pw !== con) { // first JS validation example
-            flash("Password and confirm password must match", "danger");
-            isValid = false;
-        }
-        // returning false will prevent the form from submitting
-        return isValid;
+        $_SESSION["user"]["email"] = $user["email"];
+        $_SESSION["user"]["username"] = $user["username"];
     }
-</script>
-<?php
-require_once(__DIR__ . "/../../partials/flash.php");
+} else {
+    flash("User not found", "danger");
+    redirect("landing.php");
+}
+// fetch number of saved jobs
+$stmt = $db->prepare("SELECT COUNT(*) AS total_jobs
+    FROM IT202_F25_User_Jobs
+    WHERE user_id = :uid AND is_active = 1");
+$stmt->execute([":uid" => $user_id]);
+$saved_jobs = $stmt->fetch(PDO::FETCH_ASSOC);
+$total_jobs = $saved_jobs["total_jobs"] ?? 0;
+
+// represent form as data
+$form = [
+    [
+        "type" => "email",
+        "id" => "email",
+        "name" => "email",
+        "label" => "Email",
+        "value" => se($email, null, "", false),
+        "rules" => ["required" => true]
+    ],
+    [
+        "type" => "text",
+        "id" => "username",
+        "name" => "username",
+        "label" => "Username",
+        "value" => se($username, null, "", false),
+        "rules" => ["required" => true]
+    ],
+    // Password reset section
+    [
+        "type" => "password",
+        "id" => "cp",
+        "name" => "currentPassword",
+        "label" => "Current Password",
+        "rules" => ["minlength" => 8]
+    ],
+    [
+        "type" => "password",
+        "id" => "np",
+        "name" => "newPassword",
+        "label" => "New Password",
+        "rules" => ["minlength" => 8]
+    ],
+    [
+        "type" => "password",
+        "id" => "conp",
+        "name" => "confirmPassword",
+        "label" => "Confirm Password",
+        "rules" => ["minlength" => 8]
+    ]
+];
 ?>
+<div class="container-fluid">
+    <h3>Profile</h3>
+    <?php if ($is_me): ?>
+        <?php if ($is_edit): ?>
+            <a href="?" class="btn btn-secondary">View Profile</a>
+        <?php else: ?>
+            <a href="?edit" class="btn btn-secondary">Edit Profile</a>
+        <?php endif; ?>
+    <?php endif; ?>
+    <?php if ($is_me && $is_edit): ?>
+        <!-- edit profile -->
+        <form method="POST" onsubmit="return validate(this);">
+            <?php foreach ($form as $field): ?>
+                <div class="mb-3">
+                    <?php render_input($field); ?>
+                </div>
+            <?php endforeach; ?>
+            <?php render_button(["text" => "Update Profile", "type" => "submit"]); ?>
+        </form>
+
+        <script>
+            function validate(form) {
+                let pw = form.newPassword.value;
+                let con = form.confirmPassword.value;
+                let cp = form.currentPassword.value;
+                let isValid = true;
+                if (pw && con && cp) {
+                    if (!isValidPassword(pw)) {
+                        isValid = false;
+                        flash("New Password must be at least 8 characters long", "danger");
+                    }
+                    if (!isValidPassword(con)) {
+                        isValid = false;
+                        flash("Confirm Password must be at least 8 characters long", "danger");
+                    }
+                    if (!isValidPassword(cp)) {
+                        isValid = false;
+                        flash("Current Password must be at least 8 characters long", "danger");
+                    }
+                    if (pw !== con) {
+                        flash("Password and Confirm password must match", "warning");
+                        isValid = false;
+                    }
+                }
+
+                return isValid;
+            }
+        </script>
+    <?php else: ?>
+        <!-- public profile -->
+        <!-- display user stats -->
+        <div class="card" style="max-width: 400px;">
+            <div class="card-body">
+                <h5 class="card-title"><?php se($username); ?>'s Stats</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Total Saved Jobs:</strong> <?php se($total_jobs, "wins", "N/A"); ?></li>
+                    <li class="list-group-item"><strong>Joined:</strong> <?php echo date("F j, Y", strtotime(se($user, "created", "", false))); ?></li>
+                </ul>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>

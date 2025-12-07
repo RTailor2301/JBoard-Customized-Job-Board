@@ -23,4 +23,5 @@ require(__DIR__ . "/api_helpers.php");
 require(__DIR__ . "/jsearch_api.php");
 require(__DIR__ . "/db_helpers.php");
 require(__DIR__ . "/render_functions.php");
+require(__DIR__ . "/redirect.php")
 ?>
