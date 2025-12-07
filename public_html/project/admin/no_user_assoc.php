@@ -328,7 +328,7 @@ $form = [
                             <td>0</td>
                             <td>
                                 <a class="btn btn-info btn-sm"
-                                   href="<?= get_url("job_details.php?job_id=" . $r['job_id']) ?>">
+                                   href="<?= get_url("job_details.php?id=" . $r['job_id']) ?>">
                                    View Job
                                 </a>
                             </td>
