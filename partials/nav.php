@@ -45,6 +45,9 @@ require(__DIR__ . "/../lib/functions.php");
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="<?php get_url('profile.php', true); ?>">Profile</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="<?php get_url('user_jobs.php', true); ?>">My Jobs</a>
+                    </li>
                 <?php endif; ?>
                 <?php if (!is_logged_in()) : ?>
                     <li class="nav-item">
@@ -80,6 +83,12 @@ require(__DIR__ . "/../lib/functions.php");
                             <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/create_job.php', true); ?>">Create Job</a>
                             </li>
                             <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/list_jobs.php', true); ?>">List Jobs</a>
+                            </li>
+                            <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/all_user_assoc.php', true); ?>">User Jobs</a>
+                            </li>
+                            <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/no_user_assoc.php', true); ?>">None Associated</a>
+                            </li>
+                            <li><a class="dropdown-item" aria-current="page" href="<?php get_url('admin/admin_association.php', true); ?>">Assign Jobs</a>
                             </li>
                         </ul>
                     </li>

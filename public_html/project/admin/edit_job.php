@@ -4,14 +4,14 @@ require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location: " . get_url("landing.php")));
+    redirect("landing.php");
 }
 
 // changed id logic around a bit
 $id = se($_GET, "id", -1, false);
 if ($id <= 0) {
     flash("Invalid id passed", "danger");
-    die(header("Location: " . get_url("admin/list_jobs.php")));
+    redirect("landing.php");
 }
 
 // rt524 11/23 selects all items in all tables found so far
@@ -29,7 +29,7 @@ try {
     $job = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$job) {
         flash("Job not found", "danger");
-        die(header("Location: " . get_url("admin/list_jobs.php")));
+        redirect("admin/list_jobs.php");
     }
 
     // qualifications
@@ -51,7 +51,7 @@ try {
 } catch (PDOException $e) {
     error_log("Edit job error: " . $e->getMessage());
     flash("Error occurred fetching job", "danger");
-    die(header("Location: " . get_url("admin/list_jobs.php")));
+    redirect("admin/list_jobs.php");
 }
 
 // rt524 11/23 after form submit, updates valid data in all tables, special handing for quals and resps
