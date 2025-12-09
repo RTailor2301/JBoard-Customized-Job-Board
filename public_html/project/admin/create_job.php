@@ -216,10 +216,10 @@ if (isset($_POST["action"])) {
     <h3>Create or Fetch Job</h3>
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link bg-success" href="#" onclick="switchTab('fetch')">Fetch</a>
+            <a class="nav-link bg-white border border-black" href="#" onclick="switchTab('fetch')">Fetch</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link bg-success" href="#" onclick="switchTab('create')">Create</a>
+            <a class="nav-link bg-white border border-black" href="#" onclick="switchTab('create')">Create</a>
         </li>
     </ul>
 
