@@ -84,33 +84,34 @@ if (!isset($data)) {
                     </li>
                 </ul>
             </div>
-
-            <?php if (!empty($data["job_apply_link"])) : ?>
-                <a href="<?php se($data, "job_apply_link"); ?>" target="_blank" class="btn btn-primary mt-3">
-                    Apply Now
-                </a>
-            <?php endif; ?>
-
-            <!-- Details button added -->
-            <a href="<?php echo get_url("job_details.php"); ?>?id=<?php se($data, "id"); ?>" 
-               class="btn btn-secondary mt-2">
-                Details
-            </a>
-
-            <!-- Save jobs button, only interactable if not saved -->
-            <?php if (is_logged_in()) : ?>
-                <?php if ($is_saved): ?>
-                    <form method="POST" action="<?php echo get_url('unsave_job.php'); ?>">
-                        <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
-                        <button type="submit" class="btn btn-success mt-2">Unsave</button>
-                    </form>
-                <?php else: ?>
-                    <form method="POST" action="<?php echo get_url('save_job.php'); ?>">
-                        <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
-                        <button type="submit" class="btn btn-success mt-2">Save</button>
-                    </form>
+            <div class="d-flex justify-content-between align-items-center mt-3 gap-2">
+                <?php if (!empty($data["job_apply_link"])) : ?>
+                    <a href="<?php se($data, "job_apply_link"); ?>" target="_blank" class="btn btn-primary flex-fill">
+                        Apply
+                    </a>
                 <?php endif; ?>
-            <?php endif; ?>
+
+                <!-- Details button -->
+                <a href="<?php echo get_url("job_details.php"); ?>?id=<?php se($data, "id"); ?>" 
+                class="btn btn-secondary flex-fill">
+                    Details
+                </a>
+
+                <!-- Save jobs  -->
+                <?php if (is_logged_in()) : ?>
+                    <?php if ($is_saved): ?>
+                        <form method="POST" class="p-0 m-0 w-100" action="<?php echo get_url('unsave_job.php'); ?>">
+                            <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
+                            <button type="submit" class="btn btn-success w-100">Unsave</button>
+                        </form>
+                    <?php else: ?>
+                        <form method="POST" class="p-0 m-0 w-100" action="<?php echo get_url('save_job.php'); ?>">
+                            <input type="hidden" name="job_id" value="<?php se($data, 'job_id'); ?>">
+                            <button type="submit" class="btn btn-success w-100">Save</button>
+                        </form>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 <?php endif; ?>
