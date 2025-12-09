@@ -145,7 +145,8 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
 
         $db->commit();
         flash("Job updated successfully", "success");
-        header("Location: " . get_url("admin/edit_job.php") . "?id=" . $id);
+        redirect("admin/edit_job.php");
+        //header("Location: " . get_url("admin/edit_job.php") . "?id=" . $id);
         exit;
 
     } catch (PDOException $e) {
