@@ -1,7 +1,7 @@
 ## Project Name: Technical Job Board
 ### Project Summary: A job board for users to search for jobs across different publishers and sort more efficiently, as well
 ### as bookmark jobs they find interest in to collect and save all in one place
-### Github Link: https://github.com/rt-524/rt524-it202-007
+### Github Link: https://github.com/rt-524/rt524-it202-007/tree/prod
 ### Website Link: https://rt524-it202-007-prod-a195f178bfec.herokuapp.com/project/login.php
 ### API Link: https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch
 ### Your Name: Roshan Tailor
