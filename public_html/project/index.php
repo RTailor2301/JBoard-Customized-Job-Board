@@ -1,4 +1,6 @@
-
+<?php
+require(__DIR__ . "/../../lib/functions.php");
+?>
 <style>
     /* TODO can replace the CSS as you wish or replace with bootstrap in Milestone2+ topics */
 .jumbotron {
@@ -46,7 +48,7 @@
 </style>
 <div class="jumbotron">
     <!-- TODO replace your name -->
-    <h1 class="display-4">Welcome to Roshan's project</h1>
+    <h1 class="display-4">Welcome to Roshan's Job Board!</h1>
     <!-- TODO change Date/Semester accordingly -->
     <p class="lead">This is for the Fall semester of IT202 2025</p>
     <p>
